@@ -1,0 +1,125 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Debug",
+            "type": "shell",
+            "command": "cl.exe",
+            "args": [
+                "/DUNICODE",
+                "/DDEBUG",
+                "/std:c++17",
+                "/MP",
+                "/W4",
+                "/EHsc",
+                "/Zi",
+                "/MDd",
+                "/I.\\include\\",
+                "/Fd.\\build\\debug\\",
+                "/Fo.\\build\\debug\\",
+                "/Fe.\\build\\debug\\${workspaceFolderBasename}.exe",
+                ".\\src\\*.cpp",
+                ".\\lib\\debug\\*.lib",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        /**************************************************************************/
+        /**************************************************************************/
+        /**************************************************************************/
+        {
+            "label": "Build Release",
+            "type": "shell",
+            "command": "cl.exe",
+            "args": [
+                "/DUNICODE",
+                "/DNDEBUG",
+                "/std:c++17",
+                "/MP",
+                "/W4",
+                "/EHsc",
+                "/O2",
+                "/MD",
+                "/I.\\include\\",
+                "/Fo.\\build\\release\\",
+                "/Fe.\\build\\release\\${workspaceFolderBasename}",
+                ".\\src\\*.cpp",
+                ".\\lib\\release\\*.lib",
+                "/link",
+                "/DEBUG:NONE",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        /**************************************************************************/
+        /**************************************************************************/
+        /**************************************************************************/
+        {
+            "label": "Copy Release",
+            "type": "shell",
+            "command": "copy",
+            "args": [
+                ".\\build\\release\\corth.exe",
+                ".\\release"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "Build Release"
+            ],
+            "dependsOrder": "sequence",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        /**************************************************************************/
+        /**************************************************************************/
+        /**************************************************************************/
+        {
+            "label": "Build",
+            "type": "shell",
+            "dependsOn": [
+                "Build Debug",
+                "Copy Release"
+            ],
+            "dependsOrder": "parallel",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        }
+    ]
+}
