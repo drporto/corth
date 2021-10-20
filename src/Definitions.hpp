@@ -4,4 +4,8 @@
 typedef long long int64;
 typedef unsigned char byte;
 
+struct Location;
+struct Token;
+struct Command;
+
 #endif

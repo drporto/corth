@@ -29,7 +29,7 @@ enum class TokenType {
 //     {"COUNT", TokenType::COUNT}
 // };
 
-static std::map<TokenType, std::string> TOKENNAME = {
+static std::map<TokenType, std::string> TOKEN_NAME = {
     {TokenType::INTEGER, "INTEGER"},
     {TokenType::CHAR, "CHAR"},
     {TokenType::STRING, "STRING"},
@@ -40,18 +40,15 @@ static std::map<TokenType, std::string> TOKENNAME = {
 };
 
 struct Token {
-    Location location;
     TokenType type;
+    Location location;
     std::string value;
-    int64 operand;
-    std::vector<byte> macropath;
 
     Token();
     Token(const Location* const _location, TokenType _type, const std::string* const _value);
-    Token(const Location* const _location, TokenType _type, const std::string* const _value, int64 _operand, const std::vector<byte>* const _macropath);
 };
 
-std::ostream& operator<<(std::ostream& os, const TokenType& tokentype);
+std::ostream& operator<<(std::ostream& os, const TokenType& tokenType);
 
 std::ostream& operator<<(std::ostream& os, const Token& token);
 

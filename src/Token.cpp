@@ -3,26 +3,15 @@
 Token::Token() :
     location(),
     type(),
-    value(),
-    operand(),
-    macropath() { }
+    value() { }
 
 Token::Token(const Location* const _location, TokenType _type, const std::string* const _value) :
     location(*_location),
     type(_type),
-    value(*_value),
-    operand(),
-    macropath() { }
+    value(*_value) { }
 
-Token::Token(const Location* const _location, TokenType _type, const std::string* const _value, int64 _operand, const std::vector<byte>* const _macropath) :
-    location(*_location),
-    type(_type),
-    value(*_value),
-    operand(_operand),
-    macropath(*_macropath) { };
-
-std::ostream& operator<<(std::ostream& os, const TokenType& tokentype) {
-    os << TOKENNAME[tokentype];
+std::ostream& operator<<(std::ostream& os, const TokenType& tokenType) {
+    os << TOKEN_NAME[tokenType];
     return os;
 }
 
