@@ -55,13 +55,14 @@ int main(int argc, char* argv[]) {
         runtimeStatus.preprocessorTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() * 1e-9;
 
 #ifdef DEBUG
+
+        std::cout << "MACROS: \n";
+        for (size_t i = 0; i < program.macros.size(); i++) std::cout << "[" << i << "]: " << program.macros[i] << '\n';
+        std::cout << std::endl;
+
         std::cout << "TOKENS: \n";
         for (size_t i = 0; i < program.tokens.size(); i++) std::cout << "[" << i << "]: " << program.tokens[i] << '\n';
         std::cout << std::endl;
-
-        // std::cout << "MACROS: \n";
-        // for (size_t i = 0; i < macros.size(); i++) std::cout << "[" << i << "]: " << macros[i] << '\n';
-        // std::cout << std::endl;
 
         // std::cout << "MEMORY: \n";
         // for (size_t i = 0; i < memories.size(); i++) std::cout << "[" << i << "]: " << memories[i] << '\n';

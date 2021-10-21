@@ -10,8 +10,8 @@
 #include "Command.hpp"
 
 struct Program {
-    std::vector<Token> tokens;
     std::vector<Macro> macros;
+    std::vector<Token> tokens;
     std::vector<Command> commands;
 
     Program();

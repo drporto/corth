@@ -9,7 +9,6 @@ void crossReferenceCommands(Program* const program) {
 
     std::vector<size_t> stack;
     for (size_t ip = 0; ip < commands.size(); ip++) {
-        const Command& command = commands[ip];
         switch (commands[ip].type) {
             // ! CONTROL FLOW
             // ! IF
@@ -49,7 +48,7 @@ void crossReferenceCommands(Program* const program) {
                             {
                                 PREPROC_ERROR(
                                     commands[ip].token->location,
-                                    fmt::format("The command ELSE must be inside a [EL]IF-DO block, from which a [EL]IF is missing.\n"),
+                                    fmt::format("The command ELSE must be inside a [IF|ELIF]-DO block, from which one [IF|ELIF] is missing.\n"),
                                     commands[ip].token->macrorefs
                                 );
                                 break;
@@ -61,7 +60,7 @@ void crossReferenceCommands(Program* const program) {
                     {
                         PREPROC_ERROR(
                             commands[ip].token->location,
-                            fmt::format("The command ELSE must be inside a [EL]IF-DO block, from which a DO is missing.\n"),
+                            fmt::format("The command ELSE must be inside a [IF|ELIF]-DO block, from which one DO is missing.\n"),
                             commands[ip].token->macrorefs
                         );
                         break;
@@ -99,7 +98,7 @@ void crossReferenceCommands(Program* const program) {
                             {
                                 PREPROC_ERROR(
                                     commands[ip].token->location,
-                                    fmt::format("The command ELIF must be inside a [EL]IF-DO block, from which a [EL]IF is missing.\n"),
+                                    fmt::format("The command ELIF must be inside a [IF|ELIF]-DO block, from which one [IF|ELIF] is missing.\n"),
                                     commands[ip].token->macrorefs
                                 );
                                 break;
@@ -111,7 +110,7 @@ void crossReferenceCommands(Program* const program) {
                     {
                         PREPROC_ERROR(
                             commands[ip].token->location,
-                            fmt::format("The command ELIF must be inside a [EL]IF-DO block, from which a DO is missing.\n"),
+                            fmt::format("The command ELIF must be inside a [IF|ELIF]-DO block, from which one DO is missing.\n"),
                             commands[ip].token->macrorefs
                         );
                         break;
@@ -189,6 +188,11 @@ void crossReferenceCommands(Program* const program) {
                             }
                             default:
                             {
+                                PREPROC_ERROR(
+                                    commands[ip].token->location,
+                                    fmt::format("The command END must close a [IF|ELIF|WHILE]-DO block, from which one [IF|ELIF|WHILE] is missing.\n"),
+                                    commands[ip].token->macrorefs
+                                );
                                 break;
                             }
                         }
@@ -196,13 +200,14 @@ void crossReferenceCommands(Program* const program) {
                     }
                     default:
                     {
+                        PREPROC_ERROR(
+                            commands[ip].token->location,
+                            fmt::format("The command END must close a [IF|ELIF|WHILE]-DO block, from which one DO is missing.\n"),
+                            commands[ip].token->macrorefs
+                        );
                         break;
                     }
                 }
-                break;
-            }
-            default:
-            {
                 break;
             }
         }

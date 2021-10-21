@@ -30,11 +30,11 @@ int simulateProgram(Program* const program) {
                 std::string unicodeword = pureStrToUnicodeStr(tokenValue);
                 size_t unicodewordsize = unicodeword.size();
                 if (unicodewordsize + 1 >= STRING_CAPACITY) {
-                    std::string errorMessage =
-                        LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
-                        fmt::format("The string \"{}\" causes the memory to overflow.\n", tokenValue);
-                    EXPAND_MACROS(errorMessage, commands[ip].token->macrorefs);
-                    throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
+                    RUNTIME_ERROR(
+                        location,
+                        fmt::format("The string \"{}\" causes the memory to overflow.\n", tokenValue),
+                        commands[ip].token->macrorefs
+                    );
                 }
                 stack.push_back(unicodewordsize + 1);
                 for (size_t i = 0; i < unicodewordsize; i++) {
@@ -246,11 +246,11 @@ int simulateProgram(Program* const program) {
                             }
                             default:
                             {
-                                std::string errorMessage =
-                                    LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
-                                    fmt::format("The file descriptor {} is not defined for the write syscall.\n", arg[5]);
-                                EXPAND_MACROS(errorMessage, commands[ip].token->macrorefs);
-                                throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
+                                RUNTIME_ERROR(
+                                    location,
+                                    fmt::format("The file descriptor {} is not defined for the write syscall.\n", arg[5]),
+                                    commands[ip].token->macrorefs
+                                );
                             }
                         }
                         break;
@@ -263,11 +263,11 @@ int simulateProgram(Program* const program) {
                     }
                     default:
                     {
-                        std::string errorMessage =
-                            LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
-                            fmt::format("The syscallname {} is not defined.\n", syscallname);
-                        EXPAND_MACROS(errorMessage, commands[ip].token->macrorefs);
-                        throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
+                        RUNTIME_ERROR(
+                            location,
+                            fmt::format("The syscallname {} is not defined.\n", syscallname),
+                            commands[ip].token->macrorefs
+                        );
                     }
                 }
                 ip++;
@@ -418,11 +418,11 @@ int simulateProgram(Program* const program) {
             // * BREAKPOINT
             default:
             {
-                std::string errorMessage =
-                    LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
-                    fmt::format("The command {} is not implemented.\n", COMMAND_NAME[type]);
-                EXPAND_MACROS(errorMessage, commands[ip].token->macrorefs);
-                throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
+                RUNTIME_ERROR(
+                    location,
+                    fmt::format("The command {} is not implemented.\n", COMMAND_NAME[type]),
+                    commands[ip].token->macrorefs
+                );
             }
         }
     }
