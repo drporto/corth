@@ -1,0 +1,5 @@
+INCLUDE ".\\std\\stdio.corth"
+
+"Hello, World! from 2021\n" PUTS
+
+0 EXIT

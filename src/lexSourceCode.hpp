@@ -13,4 +13,6 @@
 
 void lexSourceCode(std::string filepath, Program* const program);
 
+void lexSourceCode(std::string filepath, std::vector<Token>& tokens);
+
 #endif

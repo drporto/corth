@@ -86,7 +86,7 @@
             "command": "copy",
             "args": [
                 ".\\build\\release\\corth.exe",
-                ".\\release"
+                ".\\exe"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

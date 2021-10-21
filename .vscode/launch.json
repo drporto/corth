@@ -12,9 +12,9 @@
             "args": [
                 "--time",
                 "--simulate",
-                "..\\tests\\debug.corth"
+                ".\\debug.corth"
             ],
-            "cwd": "${workspaceFolder}\\release",
+            "cwd": "${workspaceFolder}\\exe",
             "environment": [],
             "console": "integratedTerminal",
             "enableDebugHeap": true,

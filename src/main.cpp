@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
     if (runtimeStatus.time) {
         if (runtimeStatus.exitCode == 0)std::cout << '\n';
         std::cout << fmt::format("Preprocessor took {:.9f} seconds", runtimeStatus.preprocessorTime) << std::endl;
-        std::cout << fmt::format("Simulation took {:.9f} seconds", runtimeStatus.simulationTime) << std::endl;
+        std::cout << fmt::format("  Simulation took {:.9f} seconds", runtimeStatus.simulationTime) << std::endl;
     }
 
     if (runtimeStatus.exitCode != 0)

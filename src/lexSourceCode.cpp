@@ -1,6 +1,10 @@
 #include "lexSourceCode.hpp"
 
 void lexSourceCode(std::string filepath, Program* const program) {
+    lexSourceCode(filepath, program->tokens);
+}
+
+void lexSourceCode(std::string filepath, std::vector<Token>& tokens) {
     std::ifstream file(filepath);
     if (!file.is_open()) {
         throw CorthException(SYSTEM_ERROR_CODE,
@@ -8,8 +12,6 @@ void lexSourceCode(std::string filepath, Program* const program) {
             fmt::format("The file {} was not found.\n", filepath)
         );
     }
-
-    std::vector<Token>& tokens = program->tokens;
 
     std::string lineString;
 
@@ -30,6 +32,7 @@ void lexSourceCode(std::string filepath, Program* const program) {
                     if (lineString[endcolumn] == '\\')
                         endcolumn++;
                 endcolumn++;
+                endcolumn = lineString.find(' ', endcolumn);
             }
             else {
                 endcolumn = lineString.find(' ', column);

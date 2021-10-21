@@ -10,11 +10,25 @@ void preprocessTokens(Program* const program) {
         switch (tokens[i].type) {
             case TokenType::PREPROCESSOR:
             {
-                if (tokens[i].value.compare("MACRO") == 0) {
+                // ! INCLUDE
+                if (tokens[i].value.compare("INCLUDE") == 0) {
+                    if (tokens[i + 1].type != TokenType::STRING) {
+                        throw CorthException(PREPROC_ERROR_CODE,
+                            LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
+                            fmt::format("The INCLUDE file ({0}) is a {1} and it must be a STRING.\n", tokens[i + 1].value, TOKEN_NAME[tokens[i + 1].type])
+                        );
+                    }
+                    std::vector<Token> includeTokens;
+                    lexSourceCode(pureStrToUnicodeStr(tokens[i + 1].value), includeTokens);
+                    tokens.insert(tokens.begin() + i + 2, includeTokens.begin(), includeTokens.end());
+                    tokens.erase(tokens.begin() + i, tokens.begin() + i + 2);
+                }
+                // ! MACRO
+                else if (tokens[i].value.compare("MACRO") == 0) {
                     if (tokens[i + 1].type != TokenType::WORD) {
                         throw CorthException(PREPROC_ERROR_CODE,
                             LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
-                            fmt::format("The MACRO {} must be named with a WORD.", tokens[i + 1].value)
+                            fmt::format("The MACRO name ({0}) is a {1} and it must be a WORD.", tokens[i + 1].value, TOKEN_NAME[tokens[i + 1].type])
                         );
                     }
                     macros.emplace_back(tokens[i + 1].value, tokens[i].location);
@@ -23,6 +37,7 @@ void preprocessTokens(Program* const program) {
                     macros.back().tokens.assign(tokens.begin() + start, tokens.begin() + end);
                     tokens.erase(tokens.begin() + i, tokens.begin() + end + 1);
                 }
+                // ! DEFAULT
                 else {
                     throw CorthException(PREPROC_ERROR_CODE,
                         LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
