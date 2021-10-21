@@ -7,10 +7,10 @@
 #include <fmt/core.h>
 #include <fmt/color.h>
 
-#include "Definitions.hpp"
+#include "definitions.hpp"
 
 #define LOCATION_STYLE fmt::fg(fmt::color::floral_white)
-#define PREPROC_ERROR_STYLE fmt::fg(fmt::color::crimson) | fmt::emphasis::bold
+#define PREPROC_ERROR_STYLE fmt::fg(fmt::color::orange) | fmt::emphasis::bold
 #define RUNTIME_ERROR_STYLE fmt::fg(fmt::color::crimson) | fmt::emphasis::bold
 #define SYSTEM_ERROR_STYLE fmt::fg(fmt::color::gold) | fmt::emphasis::bold
 #define MACRO_STYLE fmt::fg(fmt::color::royal_blue) | fmt::emphasis::bold

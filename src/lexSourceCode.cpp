@@ -5,7 +5,7 @@ void lexSourceCode(std::string filepath, Program* const program) {
     if (!file.is_open()) {
         throw CorthException(SYSTEM_ERROR_CODE,
             SYSTEM_ERROR_TAG +
-            fmt::format("The file {} was not found", filepath)
+            fmt::format("The file {} was not found.\n", filepath)
         );
     }
 
@@ -38,8 +38,14 @@ void lexSourceCode(std::string filepath, Program* const program) {
             Location location(filepath, line + 1, column + 1);
             tokenValue = lineString.substr(column, endcolumn - column);
 
-            // ! INTEGER
+
             if (tokenValue.find("//") == 0) break;
+            // ! PREPROCESSOR
+            else if (isPreprocessor(tokenValue)) {
+                tokens.emplace_back(TokenType::PREPROCESSOR, location, tokenValue);
+                continue;
+            }
+            // ! INTEGER
             else if (isInteger(tokenValue)) {
                 tokens.emplace_back(TokenType::INTEGER, location, tokenValue);
                 continue;
@@ -57,11 +63,6 @@ void lexSourceCode(std::string filepath, Program* const program) {
             // ! KEYWORD
             else if (isKeyword(tokenValue)) {
                 tokens.emplace_back(TokenType::KEYWORD, location, tokenValue);
-                continue;
-            }
-            // ! META
-            else if (isMeta(tokenValue)) {
-                tokens.emplace_back(TokenType::META, location, tokenValue);
                 continue;
             }
             // ! WORD

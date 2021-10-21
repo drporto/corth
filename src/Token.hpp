@@ -10,11 +10,11 @@
 #include "Location.hpp"
 
 enum class TokenType {
-    INTEGER = 0,
+    PREPROCESSOR = 0,
+    INTEGER,
     CHAR,
     STRING,
     KEYWORD,
-    META,
     WORD,
     COUNT
 };
@@ -34,7 +34,7 @@ static std::map<TokenType, std::string> TOKEN_NAME = {
     {TokenType::CHAR, "CHAR"},
     {TokenType::STRING, "STRING"},
     {TokenType::KEYWORD, "KEYWORD"},
-    {TokenType::META, "META"},
+    {TokenType::PREPROCESSOR, "PREPROCESSOR"},
     {TokenType::WORD, "WORD"},
     {TokenType::COUNT, "COUNT"}
 };

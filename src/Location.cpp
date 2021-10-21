@@ -2,7 +2,7 @@
 
 Location::Location() : filepath(), line(), column() { };
 
-Location::Location(std::string _filepath, int64 _line, int64 _column) :
+Location::Location(const std::string& _filepath, int64 _line, int64 _column) :
     filepath(_filepath),
     line(_line),
     column(_column) { }

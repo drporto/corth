@@ -12,7 +12,7 @@ struct Location {
     int64 column;
 
     Location();
-    Location(std::string _filepath, int64 _line, int64 _column);
+    Location(const std::string& _filepath, int64 _line, int64 _column);
 };
 
 std::ostream& operator<<(std::ostream& os, const Location& location);

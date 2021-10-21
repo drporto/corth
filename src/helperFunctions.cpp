@@ -29,8 +29,8 @@ bool isKeyword(std::string str) {
     return (bool)COMMAND_TYPE[str];
 }
 
-bool isMeta(std::string str) {
-    return str.compare("INCLUDE") == 0 || str.compare("MACRO") == 0 || str.compare("MEMORY") == 0;
+bool isPreprocessor(std::string str) {
+    return str.compare("INCLUDE") == 0 || str.compare("MACRO") == 0 || str.compare("MEMORY") == 0 || str.compare("END") == 0;
 }
 
 unsigned char pureStrToUnicodeChar(std::string purestr) {

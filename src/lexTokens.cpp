@@ -7,6 +7,15 @@ void lexTokens(Program* const program) {
 
     for (size_t i = 0; i < tokens.size(); i++) {
         switch (tokens[i].type) {
+            // ! PREPROCESSOR
+            case TokenType::PREPROCESSOR:
+            {
+                throw CorthException(PREPROC_ERROR_CODE,
+                    LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
+                    fmt::format("Token of type {} with value {} can not be found here.\n", TOKEN_NAME[tokens[i].type], tokens[i].value)
+                );
+                break;
+            }
             // ! INTEGER
             case TokenType::INTEGER:
             {
@@ -31,17 +40,12 @@ void lexTokens(Program* const program) {
                 commands.emplace_back(&tokens[i], COMMAND_TYPE[tokens[i].value]);
                 break;
             }
-            // ! META
-            case TokenType::META:
-            {
-                break;
-            }
             // ! WORD
             case TokenType::WORD:
             {
                 throw CorthException(PREPROC_ERROR_CODE,
                     LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
-                    fmt::format("The token {} with value {} is not valid.", TOKEN_NAME[tokens[i].type], tokens[i].value)
+                    fmt::format("Token of type {} with value {} can not be found here.\n", TOKEN_NAME[tokens[i].type], tokens[i].value)
                 );
                 break;
             }
@@ -49,7 +53,7 @@ void lexTokens(Program* const program) {
             {
                 throw CorthException(PREPROC_ERROR_CODE,
                     LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
-                    fmt::format("The token {} with value {} is not defined.", TOKEN_NAME[tokens[i].type], tokens[i].value)
+                    fmt::format("Token of type {} with value {} is not defined.\n", TOKEN_NAME[tokens[i].type], tokens[i].value)
                 );
                 break;
             }

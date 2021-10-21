@@ -31,7 +31,7 @@ int simulateProgram(Program* const program) {
                 if (unicodewordsize + 1 >= STRING_CAPACITY) {
                     std::string errorMessage =
                         LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
-                        fmt::format("The string \"{}\" causes the memory to overflow.", tokenValue);
+                        fmt::format("The string \"{}\" causes the memory to overflow.\n", tokenValue);
                     // EXPAND_MACROS(errorMessage);
                     throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
                 }
@@ -264,7 +264,7 @@ int simulateProgram(Program* const program) {
                     {
                         std::string errorMessage =
                             LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
-                            fmt::format("The syscallname {} is not defined.", syscallname);
+                            fmt::format("The syscallname {} is not defined.\n", syscallname);
                         //EXPAND_MACROS(errorMessage);
                         throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
                     }
@@ -413,7 +413,7 @@ int simulateProgram(Program* const program) {
             {
                 std::string errorMessage =
                     LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
-                    fmt::format("The command {} is not implemented.", COMMAND_NAME[type]);
+                    fmt::format("The command {} is not implemented.\n", COMMAND_NAME[type]);
                 //EXPAND_MACROS(errorMessage);
                 throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
             }

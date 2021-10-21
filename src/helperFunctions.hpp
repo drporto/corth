@@ -19,7 +19,7 @@ bool isInteger(std::string str);
 bool isChar(std::string str);
 bool isString(std::string str);
 bool isKeyword(std::string str);
-bool isMeta(std::string str);
+bool isPreprocessor(std::string str);
 
 byte pureStrToUnicodeChar(std::string purestr);
 std::string pureStrToUnicodeStr(std::string purestr);

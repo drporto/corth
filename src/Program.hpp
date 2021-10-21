@@ -6,10 +6,12 @@
 #include "Definitions.hpp"
 
 #include "Token.hpp"
+#include "Macro.hpp"
 #include "Command.hpp"
 
 struct Program {
     std::vector<Token> tokens;
+    std::vector<Macro> macros;
     std::vector<Command> commands;
 
     Program();

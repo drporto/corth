@@ -10,6 +10,7 @@
 #include "Program.hpp"
 
 #include "lexSourceCode.hpp"
+#include "preprocessTokens.hpp"
 #include "lexTokens.hpp"
 #include "simulateProgram.hpp"
 
@@ -45,6 +46,7 @@ int main(int argc, char* argv[]) {
         }
 
         lexSourceCode(runtimeStatus.filepath, &program);
+        preprocessTokens(&program);
         lexTokens(&program);
 
 #ifdef DEBUG
