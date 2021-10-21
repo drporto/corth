@@ -2,6 +2,7 @@
 
 int simulateProgram(Program* const program) {
 
+    std::vector<Macro>& macros = program->macros;
     std::vector<Command>& commands = program->commands;
 
     int exitCode = 0;
@@ -32,7 +33,7 @@ int simulateProgram(Program* const program) {
                     std::string errorMessage =
                         LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
                         fmt::format("The string \"{}\" causes the memory to overflow.\n", tokenValue);
-                    // EXPAND_MACROS(errorMessage);
+                    EXPAND_MACROS(errorMessage, commands[ip].token->macrorefs);
                     throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
                 }
                 stack.push_back(unicodewordsize + 1);
@@ -248,7 +249,7 @@ int simulateProgram(Program* const program) {
                                 std::string errorMessage =
                                     LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
                                     fmt::format("The file descriptor {} is not defined for the write syscall.\n", arg[5]);
-                                //EXPAND_MACROS(errorMessage);
+                                EXPAND_MACROS(errorMessage, commands[ip].token->macrorefs);
                                 throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
                             }
                         }
@@ -265,7 +266,7 @@ int simulateProgram(Program* const program) {
                         std::string errorMessage =
                             LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
                             fmt::format("The syscallname {} is not defined.\n", syscallname);
-                        //EXPAND_MACROS(errorMessage);
+                        EXPAND_MACROS(errorMessage, commands[ip].token->macrorefs);
                         throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
                     }
                 }
@@ -414,7 +415,7 @@ int simulateProgram(Program* const program) {
                 std::string errorMessage =
                     LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
                     fmt::format("The command {} is not implemented.\n", COMMAND_NAME[type]);
-                //EXPAND_MACROS(errorMessage);
+                EXPAND_MACROS(errorMessage, commands[ip].token->macrorefs);
                 throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
             }
         }

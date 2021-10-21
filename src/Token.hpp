@@ -8,6 +8,7 @@
 #include "Definitions.hpp"
 
 #include "Location.hpp"
+#include "MacroRef.hpp"
 
 enum class TokenType {
     PREPROCESSOR = 0,
@@ -30,11 +31,11 @@ enum class TokenType {
 // };
 
 static std::map<TokenType, std::string> TOKEN_NAME = {
+    {TokenType::PREPROCESSOR, "PREPROCESSOR"},
     {TokenType::INTEGER, "INTEGER"},
     {TokenType::CHAR, "CHAR"},
     {TokenType::STRING, "STRING"},
     {TokenType::KEYWORD, "KEYWORD"},
-    {TokenType::PREPROCESSOR, "PREPROCESSOR"},
     {TokenType::WORD, "WORD"},
     {TokenType::COUNT, "COUNT"}
 };
@@ -43,6 +44,7 @@ struct Token {
     TokenType type;
     Location location;
     std::string value;
+    std::vector<MacroRef> macrorefs;
 
     Token();
     Token(TokenType _type, const Location& _location, const std::string& _value);

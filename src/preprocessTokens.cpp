@@ -34,15 +34,19 @@ void preprocessTokens(Program* const program) {
             case TokenType::WORD:
             {
                 // ! SEARCH MACROS
-                size_t indexmacro = (size_t)-1;
+                size_t macroindex = (size_t)-1;
                 for (size_t j = 0; j < macros.size(); j++) {
                     if (tokens[i].value.compare(macros[j].name) == 0) {
-                        indexmacro = j;
+                        macroindex = j;
                         break;
                     }
                 }
-                if (indexmacro != -1) {
-                    tokens.insert(tokens.begin() + i + 1, macros[indexmacro].tokens.begin(), macros[indexmacro].tokens.end());
+                if (macroindex != -1) {
+                    tokens.insert(tokens.begin() + i + 1, macros[macroindex].tokens.begin(), macros[macroindex].tokens.end());
+                    for (size_t j = (i + 1); j < (i + 1) + macros[macroindex].tokens.size(); j++) {
+                        tokens[j].macrorefs = tokens[i].macrorefs;
+                        tokens[j].macrorefs.emplace_back(macroindex, tokens[i].location);
+                    }
                     tokens.erase(tokens.begin() + i);
                     break;
                 }

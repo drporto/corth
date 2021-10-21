@@ -27,7 +27,7 @@
 #define RUNTIME_ERROR_CODE 2
 #define SYSTEM_ERROR_CODE 3
 
-#define EXPAND_MACROS(ERRORMESSAGE) for (size_t i = 0; i < path.size(); i++) ERRORMESSAGE += (LOCATION_TAG(macros[path[path.size() - 1 - i]].location) + MACRO_TAG + fmt::format("Expanded from {}.\n", macros[path[path.size() - 1 - i]].name))
+#define EXPAND_MACROS(EM, MR) for (size_t i = 0; i < MR.size(); i++) EM += (LOCATION_TAG(MR[MR.size() - 1 - i].location) + MACRO_TAG + fmt::format("Expanded from {}.\n", macros[MR[MR.size() - 1 - i].macroindex].name));
 
 class CorthException : public std::exception {
 private:

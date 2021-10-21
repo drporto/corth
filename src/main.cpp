@@ -18,7 +18,8 @@ struct RuntimeStatus {
     int exitCode = 0;
     bool simulation = false;
     bool time = false;
-    double timeTaken = 0;
+    double preprocessorTime = 0;
+    double simulationTime = 0;
     bool filepathset = false;
     std::string filepath = "";
 };
@@ -44,10 +45,12 @@ int main(int argc, char* argv[]) {
                 break;
             }
         }
-
+        auto start = std::chrono::high_resolution_clock::now();
         lexSourceCode(runtimeStatus.filepath, &program);
         preprocessTokens(&program);
         lexTokens(&program);
+        auto end = std::chrono::high_resolution_clock::now();
+        runtimeStatus.preprocessorTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() * 1e-9;
 
 #ifdef DEBUG
         std::cout << "TOKENS: \n";
@@ -67,10 +70,10 @@ int main(int argc, char* argv[]) {
         std::cout << "----------" << std::endl;
 #endif
 
-        auto start = std::chrono::high_resolution_clock::now();
+        start = std::chrono::high_resolution_clock::now();
         runtimeStatus.exitCode = simulateProgram(&program);
-        auto end = std::chrono::high_resolution_clock::now();
-        runtimeStatus.timeTaken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() * 1e-9;
+        end = std::chrono::high_resolution_clock::now();
+        runtimeStatus.simulationTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() * 1e-9;
 
     }
     catch (CorthException& e) {
@@ -80,7 +83,8 @@ int main(int argc, char* argv[]) {
 
     if (runtimeStatus.time) {
         if (runtimeStatus.exitCode == 0)std::cout << '\n';
-        std::cout << fmt::format("Simulation took {:.9f} seconds", runtimeStatus.timeTaken) << std::endl;
+        std::cout << fmt::format("Preprocessor took {:.9f} seconds", runtimeStatus.preprocessorTime) << std::endl;
+        std::cout << fmt::format("Simulation took {:.9f} seconds", runtimeStatus.simulationTime) << std::endl;
     }
 
     if (runtimeStatus.exitCode != 0)

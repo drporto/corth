@@ -5,6 +5,7 @@
 
 #include "CorthException.hpp"
 #include "Program.hpp"
+#include "MacroRef.hpp"
 
 void preprocessTokens(Program* const program);
 
