@@ -33,6 +33,8 @@ enum class CommandType {
     TWO_DUP,
     // ! CONTROL FLOW
     IF,
+    ELSE,
+    ELIF,
     WHILE,
     DO,
     END,
@@ -66,6 +68,8 @@ static std::map<CommandType, std::string> COMMAND_NAME = {
     {CommandType::TWO_DUP, "2DUP"},
     // ! CONTROL FLOW
     {CommandType::IF, "IF"},
+    {CommandType::ELSE, "ELSE"},
+    {CommandType::ELIF, "ELIF"},
     {CommandType::WHILE, "WHILE"},
     {CommandType::DO, "DO"},
     {CommandType::END, "END"},
@@ -96,6 +100,8 @@ static std::map<std::string, CommandType> COMMAND_TYPE = {
     {"2dup", CommandType::TWO_DUP},
     // ! CONTROL FLOW
     {"if", CommandType::IF},
+    {"else", CommandType::ELSE},
+    {"elif", CommandType::ELIF},
     {"while", CommandType::WHILE},
     {"do", CommandType::DO},
     {"end", CommandType::END},

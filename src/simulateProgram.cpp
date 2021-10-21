@@ -2,8 +2,8 @@
 
 int simulateProgram(Program* const program) {
 
-    std::vector<Macro>& macros = program->macros;
-    std::vector<Command>& commands = program->commands;
+    const std::vector<Macro>& macros = program->macros;
+    const std::vector<Command>& commands = program->commands;
 
     int exitCode = 0;
     size_t ip = 0;
@@ -385,11 +385,17 @@ int simulateProgram(Program* const program) {
                 break;
             }
             // * ELSE
-            // case CommandType::ELSE:
-            // {
-            //     ip = operand;
-            //     break;
-            // }
+            case CommandType::ELSE:
+            {
+                ip = operand;
+                break;
+            }
+            // * ELIF
+            case CommandType::ELIF:
+            {
+                ip = operand;
+                break;
+            }
             // * WHILE
             case CommandType::WHILE:
             {

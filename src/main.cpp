@@ -12,6 +12,7 @@
 #include "lexSourceCode.hpp"
 #include "preprocessTokens.hpp"
 #include "lexTokens.hpp"
+#include "crossReferenceCommands.hpp"
 #include "simulateProgram.hpp"
 
 struct RuntimeStatus {
@@ -49,6 +50,7 @@ int main(int argc, char* argv[]) {
         lexSourceCode(runtimeStatus.filepath, &program);
         preprocessTokens(&program);
         lexTokens(&program);
+        crossReferenceCommands(&program);
         auto end = std::chrono::high_resolution_clock::now();
         runtimeStatus.preprocessorTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() * 1e-9;
 

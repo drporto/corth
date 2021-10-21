@@ -1,5 +1,26 @@
-INCLUDE ".\\std\\stdio.corth"
+3
+if dup 0 == do
+    0 print
+elif dup 1 == do
+    1 print
+elif dup 2 == do
+    2 print
+elif dup 3 == do
+    dup
+    while dup 0 > do
+        dup print
+        1 -
+    end
+    drop
+elif dup 4 == do
+    4 print
+elif dup 5 == do
+    5 print
+end
 
-"Hello, World! from 2021\n" PUTS
 
-0 EXIT
+// INCLUDE ".\\std\\stdio.corth"
+
+// "Hello, World! from 2021\n" PUTS
+
+// 0 EXIT

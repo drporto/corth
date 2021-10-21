@@ -27,7 +27,24 @@
 #define RUNTIME_ERROR_CODE 2
 #define SYSTEM_ERROR_CODE 3
 
-#define EXPAND_MACROS(EM, MR) for (size_t i = 0; i < MR.size(); i++) EM += (LOCATION_TAG(MR[MR.size() - 1 - i].location) + MACRO_TAG + fmt::format("Expanded from {}.\n", macros[MR[MR.size() - 1 - i].macroindex].name));
+#define EXPAND_MACROS(EM, MACROREF) \
+    for (size_t i = 0; i < MACROREF.size(); i++) \
+        EM += (LOCATION_TAG(MACROREF[MACROREF.size() - 1 - i].location) + MACRO_TAG + fmt::format("Expanded from {}.\n", macros[MACROREF[MACROREF.size() - 1 - i].macroindex].name));
+
+#define PREPROC_ERROR(LOC, M, MACROREF) \
+    std::string EM = LOCATION_TAG(LOC) + PREPROC_ERROR_TAG + M; \
+    EXPAND_MACROS(EM, MACROREF); \
+    throw CorthException(PREPROC_ERROR_CODE, EM)
+
+#define RUNTIME_ERROR(LOC, M, MACROREF) \
+    std::string EM = LOCATION_TAG(LOC) + RUNTIME_ERROR_TAG + M; \
+    EXPAND_MACROS(EM, MACROREF); \
+    throw CorthException(RUNTIME_ERROR_CODE, EM)
+
+#define SYSTEM_ERROR(LOC, M, MACROREF) \
+    std::string EM = LOCATION_TAG(LOC) + SYSTEM_ERROR_TAG + M; \
+    EXPAND_MACROS(EM, MACROREF); \
+    throw CorthException(SYSTEM_ERROR_CODE, EM)
 
 class CorthException : public std::exception {
 private:
