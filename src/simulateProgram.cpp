@@ -105,56 +105,56 @@ int simulateProgram(Program* const program) {
                 ip++;
                 break;
             }
-            // // ! BITWISE
-            // // * BIT_SHIFT_LEFT
-            // case CommandType::BIT_SHIFT_LEFT:
-            // {
-            //     // ? lvalue rvalue
-            //     int64 rvalue = stack.back(); stack.pop_back();
-            //     int64 lvalue = stack.back(); stack.pop_back();
-            //     stack.push_back(lvalue << rvalue);
-            //     ip++;
-            //     break;
-            // }
-            // // * BIT_SHIFT_RIGHT
-            // case CommandType::BIT_SHIFT_RIGHT:
-            // {
-            //     // ? lvalue rvalue
-            //     int64 rvalue = stack.back(); stack.pop_back();
-            //     int64 lvalue = stack.back(); stack.pop_back();
-            //     stack.push_back(lvalue >> rvalue);
-            //     ip++;
-            //     break;
-            // }
-            // // * BIT_AND
-            // case CommandType::BIT_AND:
-            // {
-            //     // ? lvalue rvalue
-            //     int64 rvalue = stack.back(); stack.pop_back();
-            //     int64 lvalue = stack.back(); stack.pop_back();
-            //     stack.push_back(lvalue & rvalue);
-            //     ip++;
-            //     break;
-            // }
-            // // * BIT_OR
-            // case CommandType::BIT_OR:
-            // {
-            //     // ? lvalue rvalue
-            //     int64 rvalue = stack.back(); stack.pop_back();
-            //     int64 lvalue = stack.back(); stack.pop_back();
-            //     stack.push_back(lvalue | rvalue);
-            //     ip++;
-            //     break;
-            // }
-            // case CommandType::BIT_XOR:
-            // {
-            //     // ? lvalue rvalue
-            //     int64 rvalue = stack.back(); stack.pop_back();
-            //     int64 lvalue = stack.back(); stack.pop_back();
-            //     stack.push_back(lvalue ^ rvalue);
-            //     ip++;
-            //     break;
-            // }
+            // ! BITWISE
+            // * BIT_SHIFT_LEFT
+            case CommandType::BIT_SHIFT_LEFT:
+            {
+                // ? lvalue rvalue
+                int64 rvalue = stack.back(); stack.pop_back();
+                int64 lvalue = stack.back(); stack.pop_back();
+                stack.push_back(lvalue << rvalue);
+                ip++;
+                break;
+            }
+            // * BIT_SHIFT_RIGHT
+            case CommandType::BIT_SHIFT_RIGHT:
+            {
+                // ? lvalue rvalue
+                int64 rvalue = stack.back(); stack.pop_back();
+                int64 lvalue = stack.back(); stack.pop_back();
+                stack.push_back(lvalue >> rvalue);
+                ip++;
+                break;
+            }
+            // * BIT_AND
+            case CommandType::BIT_AND:
+            {
+                // ? lvalue rvalue
+                int64 rvalue = stack.back(); stack.pop_back();
+                int64 lvalue = stack.back(); stack.pop_back();
+                stack.push_back(lvalue & rvalue);
+                ip++;
+                break;
+            }
+            // * BIT_OR
+            case CommandType::BIT_OR:
+            {
+                // ? lvalue rvalue
+                int64 rvalue = stack.back(); stack.pop_back();
+                int64 lvalue = stack.back(); stack.pop_back();
+                stack.push_back(lvalue | rvalue);
+                ip++;
+                break;
+            }
+            case CommandType::BIT_XOR:
+            {
+                // ? lvalue rvalue
+                int64 rvalue = stack.back(); stack.pop_back();
+                int64 lvalue = stack.back(); stack.pop_back();
+                stack.push_back(lvalue ^ rvalue);
+                ip++;
+                break;
+            }
             // ! COMPARISON
             // * EQUAL
             case CommandType::EQUAL:
@@ -196,33 +196,33 @@ int simulateProgram(Program* const program) {
                 ip++;
                 break;
             }
-            // // ! MEMORY
-            // // * MEM
-            // case CommandType::MEM:
-            // {
-            //     stack.push_back(STRING_CAPACITY);
-            //     ip++;
-            //     break;
-            // }
-            // // * LOAD
-            // case CommandType::LOAD:
-            // {
-            //     // ? addr
-            //     int64 addr = stack.back(); stack.pop_back();
-            //     stack.push_back((int64)memory[addr]);
-            //     ip++;
-            //     break;
-            // }
-            // // * STORE
-            // case CommandType::STORE:
-            // {
-            //     // ? value addr
-            //     int64 addr = stack.back(); stack.pop_back();
-            //     int64 value = stack.back(); stack.pop_back();
-            //     memory[addr] = (byte)value;
-            //     ip++;
-            //     break;
-            // }
+            // ! MEMORY
+            // * MEM
+            case CommandType::MEM:
+            {
+                stack.push_back(STRING_CAPACITY);
+                ip++;
+                break;
+            }
+            // * LOAD
+            case CommandType::LOAD:
+            {
+                // ? addr
+                int64 addr = stack.back(); stack.pop_back();
+                stack.push_back((int64)memory[addr]);
+                ip++;
+                break;
+            }
+            // * STORE
+            case CommandType::STORE:
+            {
+                // ? value addr
+                int64 addr = stack.back(); stack.pop_back();
+                int64 value = stack.back(); stack.pop_back();
+                memory[addr] = (byte)value;
+                ip++;
+                break;
+            }
             // ! SYSCALL
             case CommandType::SYSCALL:
             {

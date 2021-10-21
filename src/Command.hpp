@@ -21,6 +21,12 @@ enum class CommandType {
     MULT,
     DIV,
     MOD,
+    // ! BITWISE
+    BIT_SHIFT_LEFT,
+    BIT_SHIFT_RIGHT,
+    BIT_AND,
+    BIT_OR,
+    BIT_XOR,
     // ! COMPARISSON
     EQUAL,
     DIFF,
@@ -44,6 +50,10 @@ enum class CommandType {
     WHILE,
     DO,
     END,
+    // ! MEMORY
+    MEM,
+    LOAD,
+    STORE,
     // ! SYSCALL
     SYSCALL,
     // ! COUNT
@@ -62,6 +72,12 @@ static std::map<CommandType, std::string> COMMAND_NAME = {
     {CommandType::MULT, "MULT"},
     {CommandType::DIV, "DIV"},
     {CommandType::MOD, "MOD"},
+    // ! BITWISE
+    {CommandType::BIT_SHIFT_LEFT, "BIT_SHIFT_LEFT"},
+    {CommandType::BIT_SHIFT_RIGHT, "BIT_SHIFT_RIGHT"},
+    {CommandType::BIT_AND, "BIT_AND"},
+    {CommandType::BIT_OR, "BIT_OR"},
+    {CommandType::BIT_XOR, "BIT_XOR"},
     // ! COMPARISSON
     {CommandType::EQUAL, "EQUAL"},
     {CommandType::DIFF, "DIFF"},
@@ -85,6 +101,10 @@ static std::map<CommandType, std::string> COMMAND_NAME = {
     {CommandType::WHILE, "WHILE"},
     {CommandType::DO, "DO"},
     {CommandType::END, "END"},
+    // ! MEMORY
+    {CommandType::MEM, "MEM"},
+    {CommandType::LOAD, "LOAD"},
+    {CommandType::STORE, "STORE"},
     // ! SYSCALL
     {CommandType::SYSCALL, "SYSCALL"},
     // ! COUNT
@@ -100,6 +120,12 @@ static std::map<std::string, CommandType> COMMAND_TYPE = {
     {"*", CommandType::MULT},
     {"/", CommandType::DIV},
     {"%", CommandType::MOD},
+    // ! BITWISE
+    {"<<", CommandType::BIT_SHIFT_LEFT},
+    {">>", CommandType::BIT_SHIFT_RIGHT},
+    {"&", CommandType::BIT_AND},
+    {"|", CommandType::BIT_OR},
+    {"^", CommandType::BIT_XOR},
     // ! COMPARISSON
     {"==", CommandType::EQUAL},
     {"!=", CommandType::DIFF},
@@ -123,6 +149,10 @@ static std::map<std::string, CommandType> COMMAND_TYPE = {
     {"while", CommandType::WHILE},
     {"do", CommandType::DO},
     {"end", CommandType::END},
+    // ! MEMORY
+    {"mem", CommandType::MEM},
+    {"@", CommandType::LOAD},
+    {"!", CommandType::STORE},
     // ! SYSCALL
     {"syscall", CommandType::SYSCALL}
 };
