@@ -5,10 +5,10 @@ Token::Token() :
     type(),
     value() { }
 
-Token::Token(TokenType _type, Location* const _location, std::string* const _value) :
+Token::Token(TokenType _type, const Location& _location, const std::string& _value) :
     type(_type),
-    location(*_location),
-    value(*_value) { }
+    location(_location),
+    value(_value) { }
 
 std::ostream& operator<<(std::ostream& os, const TokenType& tokenType) {
     os << TOKEN_NAME[tokenType];

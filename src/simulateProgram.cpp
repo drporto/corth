@@ -30,10 +30,10 @@ int simulateProgram(Program* const program) {
                 size_t unicodewordsize = unicodeword.size();
                 if (unicodewordsize + 1 >= STRING_CAPACITY) {
                     std::string errorMessage =
-                        LOCATION_TAG(location) + ERROR_TAG +
+                        LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
                         fmt::format("The string \"{}\" causes the memory to overflow.", tokenValue);
                     // EXPAND_MACROS(errorMessage);
-                    throw CorthException(1, errorMessage);
+                    throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
                 }
                 stack.push_back(unicodewordsize + 1);
                 for (size_t i = 0; i < unicodewordsize; i++) {
@@ -223,55 +223,55 @@ int simulateProgram(Program* const program) {
             //     break;
             // }
             // ! SYSCALL
-            // case CommandType::SYSCALL:
-            // {
-            //     int64 syscallname = stack.back(); stack.pop_back();
-            //     size_t argc = (size_t)stack.back(); stack.pop_back();
-            //     int64 arg[6];
-            //     for (size_t i = 5; i > (5 - argc); i--) {
-            //         arg[i] = stack.back(); stack.pop_back();
-            //     }
-            //     switch (syscallname) {
-            //         case 1: // * WRITE
-            //         {
-            //             // ? @@@@@ fd = arg[5] @@@@@ addr = arg[4] @@@@@ count = arg[3]
-            //             std::string output;
-            //             output.insert(output.end(), memory.begin() + arg[4], memory.begin() + arg[4] + arg[3]);
-            //             switch (arg[5]) {
-            //                 case 1: // * STDOUT
-            //                 {
-            //                     std::cout << output;
-            //                     break;
-            //                 }
-            //                 default:
-            //                 {
-            //                     std::string errorMessage =
-            //                         LOCATION_TAG(location) + ERROR_TAG +
-            //                         fmt::format("The file descriptor {} is not defined for the write syscall.\n", arg[5]);
-            //                     //EXPAND_MACROS(errorMessage);
-            //                     throw CorthException(1, errorMessage);
-            //                 }
-            //             }
-            //             break;
-            //         }
-            //         case 60:
-            //         {
-            //             // ? @@@@@ exit_code = arg[5]
-            //             exitCode = (int)arg[5];
-            //             break;
-            //         }
-            //         default:
-            //         {
-            //             std::string errorMessage =
-            //                 LOCATION_TAG(location) + ERROR_TAG +
-            //                 fmt::format("The syscallname {} is not defined.", syscallname);
-            //             //EXPAND_MACROS(errorMessage);
-            //             throw CorthException(1, errorMessage);
-            //         }
-            //     }
-            //     ip++;
-            //     break;
-            // }
+            case CommandType::SYSCALL:
+            {
+                int64 syscallname = stack.back(); stack.pop_back();
+                size_t argc = (size_t)stack.back(); stack.pop_back();
+                int64 arg[6];
+                for (size_t i = 5; i > (5 - argc); i--) {
+                    arg[i] = stack.back(); stack.pop_back();
+                }
+                switch (syscallname) {
+                    case 1: // * WRITE
+                    {
+                        // ? @@@@@ fd = arg[5] @@@@@ addr = arg[4] @@@@@ count = arg[3]
+                        std::string output;
+                        output.assign(memory.begin() + arg[4], memory.begin() + arg[4] + arg[3]);
+                        switch (arg[5]) {
+                            case 1: // * STDOUT
+                            {
+                                std::cout << output;
+                                break;
+                            }
+                            default:
+                            {
+                                std::string errorMessage =
+                                    LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
+                                    fmt::format("The file descriptor {} is not defined for the write syscall.\n", arg[5]);
+                                //EXPAND_MACROS(errorMessage);
+                                throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
+                            }
+                        }
+                        break;
+                    }
+                    case 60:
+                    {
+                        // ? @@@@@ exit_code = arg[5]
+                        exitCode = (int)arg[5];
+                        break;
+                    }
+                    default:
+                    {
+                        std::string errorMessage =
+                            LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
+                            fmt::format("The syscallname {} is not defined.", syscallname);
+                        //EXPAND_MACROS(errorMessage);
+                        throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
+                    }
+                }
+                ip++;
+                break;
+            }
             // ! STACK FLOW
             // * DUP
             case CommandType::DUP:
@@ -412,10 +412,10 @@ int simulateProgram(Program* const program) {
             default:
             {
                 std::string errorMessage =
-                    LOCATION_TAG(location) + ERROR_TAG +
+                    LOCATION_TAG(location) + RUNTIME_ERROR_TAG +
                     fmt::format("The command {} is not implemented.", COMMAND_NAME[type]);
                 //EXPAND_MACROS(errorMessage);
-                throw CorthException(1, errorMessage);
+                throw CorthException(RUNTIME_ERROR_CODE, errorMessage);
             }
         }
     }

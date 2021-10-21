@@ -45,7 +45,7 @@ struct Token {
     std::string value;
 
     Token();
-    Token(TokenType _type, Location* const _location, std::string* const _value);
+    Token(TokenType _type, const Location& _location, const std::string& _value);
 };
 
 std::ostream& operator<<(std::ostream& os, const TokenType& tokenType);

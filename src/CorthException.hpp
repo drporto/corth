@@ -10,16 +10,22 @@
 #include "Definitions.hpp"
 
 #define LOCATION_STYLE fmt::fg(fmt::color::floral_white)
-#define SYSTEM_STYLE fmt::fg(fmt::color::gold) | fmt::emphasis::bold
-#define ERROR_STYLE fmt::fg(fmt::color::crimson) | fmt::emphasis::bold
+#define PREPROC_ERROR_STYLE fmt::fg(fmt::color::crimson) | fmt::emphasis::bold
+#define RUNTIME_ERROR_STYLE fmt::fg(fmt::color::crimson) | fmt::emphasis::bold
+#define SYSTEM_ERROR_STYLE fmt::fg(fmt::color::gold) | fmt::emphasis::bold
 #define MACRO_STYLE fmt::fg(fmt::color::royal_blue) | fmt::emphasis::bold
 #define INFO_STYLE fmt::fg(fmt::color::lime_green) | fmt::emphasis::bold
 
 #define LOCATION_TAG(LOC) fmt::format(LOCATION_STYLE, "({}:{}:{}): ", LOC.filepath, LOC.line, LOC.column)
-#define SYSTEM_TAG fmt::format(SYSTEM_STYLE, "[SYSTEM] ")
-#define ERROR_TAG fmt::format(ERROR_STYLE, "[ERROR] ")
+#define PREPROC_ERROR_TAG fmt::format(PREPROC_ERROR_STYLE, "[PREPROC ERROR] ")
+#define RUNTIME_ERROR_TAG fmt::format(RUNTIME_ERROR_STYLE, "[RUNTIME ERROR] ")
+#define SYSTEM_ERROR_TAG fmt::format(SYSTEM_ERROR_STYLE, "[SYSTEM ERROR] ")
 #define MACRO_TAG fmt::format(MACRO_STYLE, "[MACRO] ")
 #define INFO_TAG fmt::format(INFO_STYLE, "[INFO] ")
+
+#define PREPROC_ERROR_CODE 1
+#define RUNTIME_ERROR_CODE 2
+#define SYSTEM_ERROR_CODE 3
 
 #define EXPAND_MACROS(ERRORMESSAGE) for (size_t i = 0; i < path.size(); i++) ERRORMESSAGE += (LOCATION_TAG(macros[path[path.size() - 1 - i]].location) + MACRO_TAG + fmt::format("Expanded from {}.\n", macros[path[path.size() - 1 - i]].name))
 

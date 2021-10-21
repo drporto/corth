@@ -24,22 +24,26 @@ struct RuntimeStatus {
 
 int main(int argc, char* argv[]) {
     RuntimeStatus runtimeStatus;
-
-    for (size_t i = 1; i < argc; i++) {
-        std::string arg = argv[i];
-        if (arg.find("--") == 0 && !runtimeStatus.filepathset) {
-            if (arg.compare("--simulate") == 0) { runtimeStatus.simulation = true; continue; }
-            else if (arg.compare("--time") == 0) { runtimeStatus.time = true; continue; }
-        }
-        else {
-            if (!runtimeStatus.filepathset) { runtimeStatus.filepath = arg; runtimeStatus.filepathset = true; continue; }
-            break;
-        }
-    }
-
     Program program;
 
     try {
+        for (size_t i = 1; i < argc; i++) {
+            std::string arg = argv[i];
+            if (arg.find("--") == 0 && !runtimeStatus.filepathset) {
+                if (arg.compare("--simulate") == 0) { runtimeStatus.simulation = true; continue; }
+                else if (arg.compare("--time") == 0) { runtimeStatus.time = true; continue; }
+                else throw CorthException(SYSTEM_ERROR_CODE, SYSTEM_ERROR_TAG + fmt::format("{} is not a valid command line argument\n", arg));
+            }
+            else {
+                if (!runtimeStatus.filepathset) {
+                    runtimeStatus.filepath = arg;
+                    runtimeStatus.filepathset = true;
+                    continue;
+                }
+                break;
+            }
+        }
+
         lexSourceCode(runtimeStatus.filepath, &program);
         lexTokens(&program);
 

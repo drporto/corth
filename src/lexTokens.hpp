@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "definitions.hpp"
+#include "helperFunctions.hpp"
 
 #include "CorthException.hpp"
 #include "Program.hpp"

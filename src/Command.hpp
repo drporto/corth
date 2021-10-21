@@ -36,6 +36,9 @@ enum class CommandType {
     WHILE,
     DO,
     END,
+    // ! SYSCALL
+    SYSCALL,
+    // ! COUNT
     COUNT
 };
 
@@ -66,6 +69,9 @@ static std::map<CommandType, std::string> COMMAND_NAME = {
     {CommandType::WHILE, "WHILE"},
     {CommandType::DO, "DO"},
     {CommandType::END, "END"},
+    // ! SYSCALL
+    {CommandType::SYSCALL, "SYSCALL"},
+    // ! COUNT
     {CommandType::COUNT, "COUNT"}
 };
 
@@ -92,7 +98,9 @@ static std::map<std::string, CommandType> COMMAND_TYPE = {
     {"if", CommandType::IF},
     {"while", CommandType::WHILE},
     {"do", CommandType::DO},
-    {"end", CommandType::END}
+    {"end", CommandType::END},
+    // ! SYSCALL
+    {"syscall", CommandType::SYSCALL}
 };
 
 struct Command {

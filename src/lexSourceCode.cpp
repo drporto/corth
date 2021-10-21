@@ -3,8 +3,8 @@
 void lexSourceCode(std::string filepath, Program* const program) {
     std::ifstream file(filepath);
     if (!file.is_open()) {
-        throw CorthException(2,
-            SYSTEM_TAG +
+        throw CorthException(SYSTEM_ERROR_CODE,
+            SYSTEM_ERROR_TAG +
             fmt::format("The file {} was not found", filepath)
         );
     }
@@ -35,41 +35,38 @@ void lexSourceCode(std::string filepath, Program* const program) {
                 endcolumn = lineString.find(' ', column);
             }
 
-            Location location = Location(filepath, line + 1, column + 1);
+            Location location(filepath, line + 1, column + 1);
             tokenValue = lineString.substr(column, endcolumn - column);
 
-            // ! TokenType
-            // * INTEGER
+            // ! INTEGER
             if (tokenValue.find("//") == 0) break;
             else if (isInteger(tokenValue)) {
-                tokens.emplace_back(TokenType::INTEGER, &location, &tokenValue);
+                tokens.emplace_back(TokenType::INTEGER, location, tokenValue);
                 continue;
             }
-            // * CHAR
+            // ! CHAR
             else if (isChar(tokenValue)) {
-                tokenValue = tokenValue.substr(1, tokenValue.size() - 2);
-                tokens.emplace_back(TokenType::CHAR, &location, &tokenValue);
+                tokens.emplace_back(TokenType::CHAR, location, tokenValue.substr(1, tokenValue.size() - 2));
                 continue;
             }
-            // * STRING
+            // ! STRING
             else if (isString(tokenValue)) {
-                tokenValue = tokenValue.substr(1, tokenValue.size() - 2);
-                tokens.emplace_back(TokenType::STRING, &location, &tokenValue);
+                tokens.emplace_back(TokenType::STRING, location, tokenValue.substr(1, tokenValue.size() - 2));
                 continue;
             }
-            // * KEYWORD
+            // ! KEYWORD
             else if (isKeyword(tokenValue)) {
-                tokens.emplace_back(TokenType::KEYWORD, &location, &tokenValue);
+                tokens.emplace_back(TokenType::KEYWORD, location, tokenValue);
                 continue;
             }
-            // * META
+            // ! META
             else if (isMeta(tokenValue)) {
-                tokens.emplace_back(TokenType::META, &location, &tokenValue);
+                tokens.emplace_back(TokenType::META, location, tokenValue);
                 continue;
             }
-            // * WORD
+            // ! WORD
             else {
-                tokens.emplace_back(TokenType::WORD, &location, &tokenValue);
+                tokens.emplace_back(TokenType::WORD, location, tokenValue);
                 continue;
             }
         }
