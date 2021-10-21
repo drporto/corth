@@ -258,8 +258,7 @@ int simulateProgram(Program* const program) {
                     case 60:
                     {
                         // ? @@@@@ exit_code = arg[5]
-                        exitCode = (int)arg[5];
-                        break;
+                        return (int)arg[5];
                     }
                     default:
                     {

@@ -15,7 +15,7 @@ void preprocessTokens(Program* const program) {
                     if (tokens[i + 1].type != TokenType::STRING) {
                         throw CorthException(PREPROC_ERROR_CODE,
                             LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
-                            fmt::format("The INCLUDE file ({0}) is a {1} and it must be a STRING.\n", tokens[i + 1].value, TOKEN_NAME[tokens[i + 1].type])
+                            fmt::format("The INCLUDE file \'{0}\' is a {1} and it must be a STRING.\n", tokens[i + 1].value, TOKEN_NAME[tokens[i + 1].type])
                         );
                     }
                     std::vector<Token> includeTokens;
@@ -28,7 +28,7 @@ void preprocessTokens(Program* const program) {
                     if (tokens[i + 1].type != TokenType::WORD) {
                         throw CorthException(PREPROC_ERROR_CODE,
                             LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
-                            fmt::format("The MACRO name ({0}) is a {1} and it must be a WORD.", tokens[i + 1].value, TOKEN_NAME[tokens[i + 1].type])
+                            fmt::format("The MACRO name \'{0}\' is a {1} and it must be a WORD.", tokens[i + 1].value, TOKEN_NAME[tokens[i + 1].type])
                         );
                     }
                     macros.emplace_back(tokens[i + 1].value, tokens[i].location);
@@ -41,7 +41,7 @@ void preprocessTokens(Program* const program) {
                 else {
                     throw CorthException(PREPROC_ERROR_CODE,
                         LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
-                        fmt::format("Token of type {} with value {} is not implemented yet.\n", TOKEN_NAME[tokens[i].type], tokens[i].value)
+                        fmt::format("Token of type {} with value \'{}\' is not implemented yet.\n", TOKEN_NAME[tokens[i].type], tokens[i].value)
                     );
                 }
                 break;
@@ -69,7 +69,7 @@ void preprocessTokens(Program* const program) {
 
                 throw CorthException(PREPROC_ERROR_CODE,
                     LOCATION_TAG(tokens[i].location) + PREPROC_ERROR_TAG +
-                    fmt::format("Token of type {} with value {} was not defined.\n", TOKEN_NAME[tokens[i].type], tokens[i].value)
+                    fmt::format("Token of type {} with value \'{}\' is not defined.\n", TOKEN_NAME[tokens[i].type], tokens[i].value)
                 );
                 break;
             }

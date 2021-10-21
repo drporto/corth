@@ -13,7 +13,7 @@ MACRO MAX 4000000 END
 
 1 2
 while dup MAX < do
-    if dup 2 % 0 == then
+    if dup 2 % 0 == do
         dup mem @32 + mem !32
     end
     dup <<< +

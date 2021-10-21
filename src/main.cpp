@@ -17,7 +17,6 @@
 
 struct RuntimeStatus {
     int exitCode = 0;
-    bool simulation = false;
     bool time = false;
     double preprocessorTime = 0;
     double simulationTime = 0;
@@ -33,9 +32,13 @@ int main(int argc, char* argv[]) {
         for (size_t i = 1; i < argc; i++) {
             std::string arg = argv[i];
             if (arg.find("--") == 0 && !runtimeStatus.filepathset) {
-                if (arg.compare("--simulate") == 0) { runtimeStatus.simulation = true; continue; }
-                else if (arg.compare("--time") == 0) { runtimeStatus.time = true; continue; }
-                else throw CorthException(SYSTEM_ERROR_CODE, SYSTEM_ERROR_TAG + fmt::format("{} is not a valid command line argument\n", arg));
+                if (arg.compare("--time") == 0) {
+                    runtimeStatus.time = true;
+                    continue;
+                }
+                else {
+                    SYSTEM_ERROR(fmt::format("{} is not a valid command line argument\n", arg));
+                }
             }
             else {
                 if (!runtimeStatus.filepathset) {

@@ -2,7 +2,7 @@
 // Find the sum of all the multiples of 3 or 5 below 1000.
 
 INCLUDE ".\\std\\stdio.corth"
-INCLUDE ".\\std\\stdlib.corth"
+//INCLUDE ".\\std\\stdlib.corth"
 
 MACRO MAX 1000 END
 
@@ -11,7 +11,7 @@ MACRO MAX 1000 END
 3 0
 while over MAX < do
     over dup
-    if 3 % 0 == swap 5 % 0 == | then
+    if 3 % 0 == swap 5 % 0 == | do
         over +
     end
     swap 1 + swap

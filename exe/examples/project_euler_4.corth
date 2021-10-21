@@ -4,15 +4,15 @@
 INCLUDE ".\\std\\stdio.corth"
 INCLUDE ".\\std\\stdlib.corth"
 
-MACRO N1 100 END
-MACRO N2 999 END
+MACRO N1 1000 END
+MACRO N2 9999 END
 MACRO MAX* mem END
 
 0 MAX* !32
 
 N2
 while dup N1 > do
-    if dup 10 % 0 == then
+    if dup 10 % 0 == do
         dup print
     end
     dup
@@ -23,9 +23,9 @@ while dup N1 > do
             swap 10 /
         end
         drop                        // i j possible1 possible2
-        if over == then             // i j possible1 possible2
+        if over == do             // i j possible1 possible2
             MAX* @32                // i j palidrome MAX
-            if 2dup > then          // i j palidrome MAX
+            if 2dup > do          // i j palidrome MAX
                 drop MAX* !32       // i j <NEW MAX SAVED>
             else
                 2drop               // i j
@@ -40,7 +40,7 @@ while dup N1 > do
 end
 drop
 
-"The largest palindrome made from the product of 3 digits is: " PUTS
+"The largest palindrome made from the product of 4 digits is: " PUTS
 MAX* @32 print
 
 0 EXIT

@@ -6,12 +6,8 @@ void lexSourceCode(std::string filepath, Program* const program) {
 
 void lexSourceCode(std::string filepath, std::vector<Token>& tokens) {
     std::ifstream file(filepath);
-    if (!file.is_open()) {
-        throw CorthException(SYSTEM_ERROR_CODE,
-            SYSTEM_ERROR_TAG +
-            fmt::format("The file {} was not found.\n", filepath)
-        );
-    }
+    if (!file.is_open())
+        SYSTEM_ERROR(fmt::format("The file {} was not found.\n", filepath));
 
     std::string lineString;
 

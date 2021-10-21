@@ -41,10 +41,7 @@
     EXPAND_MACROS(EM, MACROREF); \
     throw CorthException(RUNTIME_ERROR_CODE, EM)
 
-#define SYSTEM_ERROR(LOC, M, MACROREF) \
-    std::string EM = LOCATION_TAG(LOC) + SYSTEM_ERROR_TAG + M; \
-    EXPAND_MACROS(EM, MACROREF); \
-    throw CorthException(SYSTEM_ERROR_CODE, EM)
+#define SYSTEM_ERROR(M) throw CorthException(SYSTEM_ERROR_CODE, SYSTEM_ERROR_TAG + M)
 
 class CorthException : public std::exception {
 private:
