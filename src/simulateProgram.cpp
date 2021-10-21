@@ -294,32 +294,32 @@ int simulateProgram(Program* const program) {
                 ip++;
                 break;
             }
-            // // * SWAP
-            // case CommandType::SWAP:
-            // {
-            //     // ? v1 v2
-            //     int64 v2 = stack.back(); stack.pop_back();
-            //     int64 v1 = stack.back(); stack.pop_back();
-            //     stack.push_back(v2);
-            //     stack.push_back(v1);
-            //     ip++;
-            //     break;
-            // }
-            // // * 2SWAP
-            // case CommandType::TWO_SWAP:
-            // {
-            //     // ? v1 v2 v3 v4
-            //     int64 v4 = stack.back(); stack.pop_back();
-            //     int64 v3 = stack.back(); stack.pop_back();
-            //     int64 v2 = stack.back(); stack.pop_back();
-            //     int64 v1 = stack.back(); stack.pop_back();
-            //     stack.push_back(v3);
-            //     stack.push_back(v4);
-            //     stack.push_back(v1);
-            //     stack.push_back(v2);
-            //     ip++;
-            //     break;
-            // }
+            // * SWAP
+            case CommandType::SWAP:
+            {
+                // ? v1 v2
+                int64 v2 = stack.back(); stack.pop_back();
+                int64 v1 = stack.back(); stack.pop_back();
+                stack.push_back(v2);
+                stack.push_back(v1);
+                ip++;
+                break;
+            }
+            // * 2SWAP
+            case CommandType::TWO_SWAP:
+            {
+                // ? v1 v2 v3 v4
+                int64 v4 = stack.back(); stack.pop_back();
+                int64 v3 = stack.back(); stack.pop_back();
+                int64 v2 = stack.back(); stack.pop_back();
+                int64 v1 = stack.back(); stack.pop_back();
+                stack.push_back(v3);
+                stack.push_back(v4);
+                stack.push_back(v1);
+                stack.push_back(v2);
+                ip++;
+                break;
+            }
             // * DROP
             case CommandType::DROP:
             {
@@ -334,49 +334,49 @@ int simulateProgram(Program* const program) {
                 ip++;
                 break;
             }
-            // case CommandType::OVER:
-            // {
-            //     // ? v1      v2
-            //     // ? end()-2 end()-1
-            //     stack.push_back(*(stack.end() - 2));
-            //     ip++;
-            //     break;
-            // }
-            // case CommandType::TWOOVER:
-            // {
-            //     // ? v1      v2      v3      v4
-            //     // ? end()-4 end()-3 end()-2 end()-1
-            //     stack.push_back(*(stack.end() - 4));
-            //     stack.push_back(*(stack.end() - 4));
-            //     ip++;
-            //     break;
-            // }
-            // // * ROTATE_LEFT
-            // case CommandType::ROTATE_LEFT:
-            // {
-            //     // ? v1 v2 v3
-            //     int64 v3 = stack.back(); stack.pop_back();
-            //     int64 v2 = stack.back(); stack.pop_back();
-            //     int64 v1 = stack.back(); stack.pop_back();
-            //     stack.push_back(v2);
-            //     stack.push_back(v3);
-            //     stack.push_back(v1);
-            //     ip++;
-            //     break;
-            // }
-            // // * ROTATE_LEFT
-            // case CommandType::ROTATE_RIGHT:
-            // {
-            //     // ? v1 v2 v3
-            //     int64 v3 = stack.back(); stack.pop_back();
-            //     int64 v2 = stack.back(); stack.pop_back();
-            //     int64 v1 = stack.back(); stack.pop_back();
-            //     stack.push_back(v3);
-            //     stack.push_back(v1);
-            //     stack.push_back(v2);
-            //     ip++;
-            //     break;
-            // }
+            case CommandType::OVER:
+            {
+                // ? v1      v2
+                // ? end()-2 end()-1
+                stack.push_back(*(stack.end() - 2));
+                ip++;
+                break;
+            }
+            case CommandType::TWO_OVER:
+            {
+                // ? v1      v2      v3      v4
+                // ? end()-4 end()-3 end()-2 end()-1
+                stack.push_back(*(stack.end() - 4));
+                stack.push_back(*(stack.end() - 4));
+                ip++;
+                break;
+            }
+            // * ROTATE_LEFT
+            case CommandType::ROTATE_LEFT:
+            {
+                // ? v1 v2 v3
+                int64 v3 = stack.back(); stack.pop_back();
+                int64 v2 = stack.back(); stack.pop_back();
+                int64 v1 = stack.back(); stack.pop_back();
+                stack.push_back(v2);
+                stack.push_back(v3);
+                stack.push_back(v1);
+                ip++;
+                break;
+            }
+            // * ROTATE_LEFT
+            case CommandType::ROTATE_RIGHT:
+            {
+                // ? v1 v2 v3
+                int64 v3 = stack.back(); stack.pop_back();
+                int64 v2 = stack.back(); stack.pop_back();
+                int64 v1 = stack.back(); stack.pop_back();
+                stack.push_back(v3);
+                stack.push_back(v1);
+                stack.push_back(v2);
+                ip++;
+                break;
+            }
             // ! CONTROL FLOW
             // * IF
             case CommandType::IF:
