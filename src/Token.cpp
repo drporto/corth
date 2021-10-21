@@ -5,9 +5,9 @@ Token::Token() :
     type(),
     value() { }
 
-Token::Token(const Location* const _location, TokenType _type, const std::string* const _value) :
-    location(*_location),
+Token::Token(TokenType _type, Location* const _location, std::string* const _value) :
     type(_type),
+    location(*_location),
     value(*_value) { }
 
 std::ostream& operator<<(std::ostream& os, const TokenType& tokenType) {

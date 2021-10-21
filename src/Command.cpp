@@ -5,6 +5,11 @@ Command::Command() :
     type(),
     operand() { }
 
+Command::Command(Token* _token, CommandType _type) :
+    token(_token),
+    type(_type),
+    operand(0) { }
+
 Command::Command(Token* _token, CommandType _type, int64 _operand) :
     token(_token),
     type(_type),
@@ -21,9 +26,13 @@ std::ostream& operator<<(std::ostream& os, const Command& command) {
             os << "(" << command.token->location << ") " << command.type << " " << command.token->value;
             break;
         }
+        case CommandType::PUSH_INT: {
+            os << "(" << command.token->location << ") " << command.type << " " << command.operand;
+            break;
+        }
         default:
         {
-            os << "(" << command.token->location << ") " << command.type << " " << command.operand;
+            os << "(" << command.token->location << ") " << command.type;
             break;
         }
     }

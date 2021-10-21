@@ -2,8 +2,8 @@
 
 Location::Location() : filepath(), line(), column() { };
 
-Location::Location(const std::string* const _filepath, int64 _line, int64 _column) :
-    filepath(*_filepath),
+Location::Location(std::string _filepath, int64 _line, int64 _column) :
+    filepath(_filepath),
     line(_line),
     column(_column) { }
 

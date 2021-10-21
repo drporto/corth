@@ -1,0 +1,17 @@
+// value addr
+MACRO !32
+    over 24 >>       over     !
+    over 16 >> 255 & over 1 + !
+    over  8 >> 255 & over 2 + !
+    over       255 & over 3 + !
+    2drop
+END
+
+// addr
+MACRO @32
+    dup      @ 24 <<
+    over 1 + @ 16 << |
+    over 2 + @  8 << |
+    over 3 + @       |
+    swap drop
+END

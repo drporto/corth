@@ -1,0 +1,5 @@
+INCLUDE ".\\std\\stdio.corth"
+
+"Hello, World! with Un¡cod£\n" PUTS
+
+0 EXIT

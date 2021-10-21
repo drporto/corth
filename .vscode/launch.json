@@ -11,6 +11,7 @@
             "program": "..\\build\\debug\\${workspaceFolderBasename}.exe",
             "args": [
                 "--time",
+                "--simulate",
                 "..\\tests\\debug.corth"
             ],
             "cwd": "${workspaceFolder}\\release",

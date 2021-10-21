@@ -1,5 +1,2 @@
 .vscode/settings.json
-
 build/**
-release/**
-tests/**

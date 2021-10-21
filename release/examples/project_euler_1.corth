@@ -1,0 +1,22 @@
+// If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+// Find the sum of all the multiples of 3 or 5 below 1000.
+
+INCLUDE ".\\std\\stdio.corth"
+INCLUDE ".\\std\\stdlib.corth"
+
+MACRO MAX 1000 END
+
+"Sum of the multiples of 3 or 5 below 1000: " PUTS
+
+3 0
+while over MAX < do
+    over dup
+    if 3 % 0 == swap 5 % 0 == | then
+        over +
+    end
+    swap 1 + swap
+end
+print
+drop
+
+0 EXIT

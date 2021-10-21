@@ -1,10 +1,86 @@
 #include <iostream>
+#include <chrono>
 
 #include <fmt/core.h>
+#include <fmt/color.h>
 
-int main(void) {
+#include "definitions.hpp"
+#include "CorthException.hpp"
 
-    std::cout << fmt::format("Hello World from {}!", "fmt") << std::endl;
+#include "Program.hpp"
 
-    return 0;
+#include "lexSourceCode.hpp"
+#include "lexTokens.hpp"
+#include "simulateProgram.hpp"
+
+struct RuntimeStatus {
+    int exitCode = 0;
+    bool simulation = false;
+    bool time = false;
+    double timeTaken = 0;
+    bool filepathset = false;
+    std::string filepath = "";
+};
+
+int main(int argc, char* argv[]) {
+    RuntimeStatus runtimeStatus;
+
+    for (size_t i = 1; i < argc; i++) {
+        std::string arg = argv[i];
+        if (arg.find("--") == 0 && !runtimeStatus.filepathset) {
+            if (arg.compare("--simulate") == 0) { runtimeStatus.simulation = true; continue; }
+            else if (arg.compare("--time") == 0) { runtimeStatus.time = true; continue; }
+        }
+        else {
+            if (!runtimeStatus.filepathset) { runtimeStatus.filepath = arg; runtimeStatus.filepathset = true; continue; }
+            break;
+        }
+    }
+
+    Program program;
+
+    try {
+        lexSourceCode(runtimeStatus.filepath, &program);
+        lexTokens(&program);
+
+#ifdef DEBUG
+        std::cout << "TOKENS: \n";
+        for (size_t i = 0; i < program.tokens.size(); i++) std::cout << "[" << i << "]: " << program.tokens[i] << '\n';
+        std::cout << std::endl;
+
+        // std::cout << "MACROS: \n";
+        // for (size_t i = 0; i < macros.size(); i++) std::cout << "[" << i << "]: " << macros[i] << '\n';
+        // std::cout << std::endl;
+
+        // std::cout << "MEMORY: \n";
+        // for (size_t i = 0; i < memories.size(); i++) std::cout << "[" << i << "]: " << memories[i] << '\n';
+        // std::cout << std::endl;
+
+        std::cout << "COMMANDS: \n";
+        for (size_t i = 0; i < program.commands.size(); i++) std::cout << "[" << i << "]: " << program.commands[i] << '\n';
+        std::cout << "----------" << std::endl;
+#endif
+
+        auto start = std::chrono::high_resolution_clock::now();
+        runtimeStatus.exitCode = simulateProgram(&program);
+        auto end = std::chrono::high_resolution_clock::now();
+        runtimeStatus.timeTaken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() * 1e-9;
+
+    }
+    catch (CorthException& e) {
+        runtimeStatus.exitCode = e.getErrorCode();
+        std::cerr << e.getMessage() << std::endl;
+    }
+
+    if (runtimeStatus.time) {
+        if (runtimeStatus.exitCode == 0)std::cout << '\n';
+        std::cout << fmt::format("Simulation took {:.9f} seconds", runtimeStatus.timeTaken) << std::endl;
+    }
+
+    if (runtimeStatus.exitCode != 0)
+        std::cout << fmt::format("Program exited ") << fmt::format(fmt::fg(fmt::color::indian_red), "abnormally") << fmt::format(" with code {}", runtimeStatus.exitCode) << std::ends;
+    else
+        std::cout << fmt::format("Program exited ") << fmt::format(fmt::fg(fmt::color::pale_green), "successfully") << fmt::format(" with code {}", runtimeStatus.exitCode) << std::ends;
+
+    return runtimeStatus.exitCode;
 }

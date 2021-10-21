@@ -14,7 +14,7 @@ enum class TokenType {
     CHAR,
     STRING,
     KEYWORD,
-    PREPROCESSOR,
+    META,
     WORD,
     COUNT
 };
@@ -24,7 +24,7 @@ enum class TokenType {
 //     {"CHAR", TokenType::CHAR},
 //     {"STRING", TokenType::STRING},
 //     {"KEYWORD", TokenType::KEYWORD},
-//     {"PREPROCESSOR", TokenType::PREPROCESSOR},
+//     {"META", TokenType::META},
 //     {"WORD", TokenType::WORD},
 //     {"COUNT", TokenType::COUNT}
 // };
@@ -34,7 +34,7 @@ static std::map<TokenType, std::string> TOKEN_NAME = {
     {TokenType::CHAR, "CHAR"},
     {TokenType::STRING, "STRING"},
     {TokenType::KEYWORD, "KEYWORD"},
-    {TokenType::PREPROCESSOR, "PREPROCESSOR"},
+    {TokenType::META, "META"},
     {TokenType::WORD, "WORD"},
     {TokenType::COUNT, "COUNT"}
 };
@@ -45,7 +45,7 @@ struct Token {
     std::string value;
 
     Token();
-    Token(const Location* const _location, TokenType _type, const std::string* const _value);
+    Token(TokenType _type, Location* const _location, std::string* const _value);
 };
 
 std::ostream& operator<<(std::ostream& os, const TokenType& tokenType);
