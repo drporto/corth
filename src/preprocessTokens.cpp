@@ -37,6 +37,9 @@ void preprocessTokens(Program* const program) {
                     macros.back().tokens.assign(tokens.begin() + start, tokens.begin() + end);
                     tokens.erase(tokens.begin() + i, tokens.begin() + end + 1);
                 }
+                // ! MEMORY
+                else if (tokens[i].value.compare("MEMORY") == 0) {
+                }
                 // ! DEFAULT
                 else {
                     throw CorthException(PREPROC_ERROR_CODE,

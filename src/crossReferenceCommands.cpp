@@ -4,212 +4,123 @@ void crossReferenceCommands(Program* const program) {
 
     const std::vector<Macro>& macros = program->macros;
     std::vector<Command>& commands = program->commands;
+    std::vector<size_t> ips;
 
-    size_t ref_ip = 0;
-
-    std::vector<size_t> stack;
-    for (size_t ip = 0; ip < commands.size(); ip++) {
-        switch (commands[ip].type) {
-            // ! CONTROL FLOW
-            // ! IF
-            case CommandType::IF:
-            {
-                stack.push_back(ip); // ? IF_ip
-                break;
-            }
-            // ! ELSE
-            case CommandType::ELSE:
-            {
-                ref_ip = stack.back();
-                switch (commands[ref_ip].type) {
-                    case CommandType::DO:
-                    {
-                        size_t DO_ip = stack.back(); stack.pop_back();
-                        ref_ip = stack.back();
-                        switch (commands[ref_ip].type) {
-                            case CommandType::IF:
-                            {
-                                // ? IF DO <ELSE>
-                                //size_t IF_ip = stack.back();
-                                commands[DO_ip].operand = ip + 1;
-                                stack.push_back(ip);
-                                break;
-                                // ? IF ELSE
-                            }
-                            case CommandType::ELIF:
-                            {
-                                // ? IF [ELIF ... ELIF] DO <ELSE>
-                                commands[DO_ip].operand = ip + 1;
-                                stack.push_back(ip);
-                                break;
-                                // ? IF [ELIF ... ELIF] ELSE
-                            }
-                            default:
-                            {
-                                PREPROC_ERROR(
-                                    commands[ip].token->location,
-                                    fmt::format("The command ELSE must be inside a [IF|ELIF]-DO block, from which one [IF|ELIF] is missing.\n"),
-                                    commands[ip].token->macrorefs
-                                );
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    default:
-                    {
-                        PREPROC_ERROR(
-                            commands[ip].token->location,
-                            fmt::format("The command ELSE must be inside a [IF|ELIF]-DO block, from which one DO is missing.\n"),
-                            commands[ip].token->macrorefs
-                        );
-                        break;
-                    }
-                }
-                break;
-            }
-            // ! ELIF
-            case CommandType::ELIF:
-            {
-                ref_ip = stack.back();
-                switch (commands[ref_ip].type) {
-                    case CommandType::DO:
-                    {
-                        size_t DO_ip = stack.back(); stack.pop_back();
-                        ref_ip = stack.back();
-                        switch (commands[ref_ip].type) {
-                            case CommandType::IF:
-                            {
-                                // ? IF DO <ELIF>
-                                commands[DO_ip].operand = ip + 1;
-                                stack.push_back(ip);
-                                break;
-                                // ? IF ELIF
-                            }
-                            case CommandType::ELIF:
-                            {
-                                // ? IF [ELIF ... ELIF] DO <ELIF>
-                                commands[DO_ip].operand = ip + 1;
-                                stack.push_back(ip);
-                                break;
-                                // ? IF [ELIF ... ELIF] ELIF
-                            }
-                            default:
-                            {
-                                PREPROC_ERROR(
-                                    commands[ip].token->location,
-                                    fmt::format("The command ELIF must be inside a [IF|ELIF]-DO block, from which one [IF|ELIF] is missing.\n"),
-                                    commands[ip].token->macrorefs
-                                );
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    default:
-                    {
-                        PREPROC_ERROR(
-                            commands[ip].token->location,
-                            fmt::format("The command ELIF must be inside a [IF|ELIF]-DO block, from which one DO is missing.\n"),
-                            commands[ip].token->macrorefs
-                        );
-                        break;
-                    }
-                }
-                break;
-            }
-            // ! WHILE
-            case CommandType::WHILE:
-            {
-                stack.push_back(ip); // ? WHILE_ip
-                break;
-            }
-            // ! DO
-            case CommandType::DO:
-            {
-                stack.push_back(ip); // ? DO_ip
-                break;
-            }
-            // ! END
-            case CommandType::END:
-            {
-                ref_ip = stack.back();
-                switch (commands[ref_ip].type) {
-                    case CommandType::ELSE:
-                    {
-                        // ? IF [ELIF ... ELIF] ELSE <END>
-                        size_t LAST_ip = stack.back();
-                        while (commands[LAST_ip].type != CommandType::IF) {
-                            commands[LAST_ip].operand = ip + 1;
-                            stack.pop_back();
-                            LAST_ip = stack.back();
-                        }
-                        stack.pop_back();
-                        commands[ip].operand = ip + 1;
-                        break;
-                        // ?
-                    }
-                    case CommandType::DO:
-                    {
-                        size_t DO_ip = stack.back(); stack.pop_back();
-                        ref_ip = stack.back();
-                        switch (commands[ref_ip].type) {
-                            case CommandType::IF:
-                            {
-                                // ? IF DO <END>
-                                //size_t IF_ip = stack.back();
-                                stack.pop_back();
-                                commands[DO_ip].operand = ip + 1;
-                                commands[ip].operand = ip + 1;
-                                break;
-                                // ?
-                            }
-                            case CommandType::ELIF:
-                            {
-                                // ? IF [ELIF ... ELIF] ELIF <END>
-                                size_t LAST_ip = stack.back();
-                                while (commands[LAST_ip].type != CommandType::IF) {
-                                    commands[LAST_ip].operand = ip + 1;
-                                    stack.pop_back();
-                                    LAST_ip = stack.back();
-                                }
-                                stack.pop_back();
-                                commands[ip].operand = ip + 1;
-                                break;
-                                // ?
-                            }
-                            case CommandType::WHILE: {
-                                // ? WHILE DO <END>
-                                size_t WHILE_ip = stack.back(); stack.pop_back();
-                                commands[DO_ip].operand = ip + 1;
-                                commands[ip].operand = WHILE_ip + 1;
-                                break;
-                                // ?
-                            }
-                            default:
-                            {
-                                PREPROC_ERROR(
-                                    commands[ip].token->location,
-                                    fmt::format("The command END must close a [IF|ELIF|WHILE]-DO block, from which one [IF|ELIF|WHILE] is missing.\n"),
-                                    commands[ip].token->macrorefs
-                                );
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    default:
-                    {
-                        PREPROC_ERROR(
-                            commands[ip].token->location,
-                            fmt::format("The command END must close a [IF|ELIF|WHILE]-DO block, from which one DO is missing.\n"),
-                            commands[ip].token->macrorefs
-                        );
-                        break;
-                    }
-                }
-                break;
-            }
-        }
+    for (size_t i = 0; i < commands.size(); i++) {
+        CommandType ct = commands[i].type;
+        if (
+            ct == CommandType::IF ||
+            ct == CommandType::ELSE ||
+            ct == CommandType::ELIF ||
+            ct == CommandType::WHILE ||
+            ct == CommandType::DO ||
+            ct == CommandType::END ||
+            ct == CommandType::BREAK
+            )
+            ips.push_back(i);
+    }
+    if (!ips.empty()) {
+        std::reverse(ips.begin(), ips.end());
+        crossReferenceBlocks(macros, commands, ips, 0);
     }
 }
+
+// !    IF,
+// !    ELSE,
+// !    ELIF,
+// !    WHILE,
+// !    DO,
+// !    END,
+
+void crossReferenceBlocks(const std::vector<Macro>& macros, std::vector<Command>& commands, std::vector<size_t>& ips, size_t end) {
+#ifdef DEBUG
+    std::cout << LOCATION_TAG(commands[ips[end]].token->location) << ips[end] << ": " << COMMAND_NAME[commands[ips[end]].type] << " " << commands[ips[end]].operand << std::endl;
+#endif
+    size_t start = end + 1;
+    std::vector<size_t> ips_break;
+    while (commands[ips[start]].type != CommandType::IF && commands[ips[start]].type != CommandType::WHILE) {
+        if (commands[ips[start]].type == CommandType::END) crossReferenceBlocks(macros, commands, ips, start);
+        else start++;
+    }
+#ifdef DEBUG
+    std::cout << LOCATION_TAG(commands[ips[start]].token->location) << ips[start] << ": " << COMMAND_NAME[commands[ips[start]].type] << " " << commands[ips[start]].operand << std::endl;
+#endif
+    switch (commands[ips[start]].type) {
+        case CommandType::IF:
+        {
+            commands[ips[end]].operand = ips[end] + 1;
+            for (size_t i = end + 1; i < start; i++) {
+                switch (commands[ips[i]].type) {
+                    case CommandType::ELSE:
+                    {
+                        commands[ips[i]].operand = ips[end] + 1;
+                        break;
+                    }
+                    case CommandType::ELIF:
+                    {
+                        commands[ips[i]].operand = ips[end] + 1;
+                        break;
+                    }
+                    case CommandType::DO:
+                    {
+                        if (commands[ips[i - 1]].type != CommandType::BREAK)
+                            commands[ips[i]].operand = ips[i - 1] + 1;
+                        else
+                            commands[ips[i]].operand = ips[i - 2] + 1;
+                        break;
+                    }
+                    case CommandType::BREAK:
+                    {
+                        ips_break.push_back(ips[i]);
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
+            }
+            break;
+        }
+        case CommandType::WHILE:
+        {
+            commands[ips[end]].operand = ips[start] + 1;
+            for (size_t i = end + 1; i < start; i++) {
+                switch (commands[ips[i]].type) {
+                    case CommandType::DO:
+                    {
+                        commands[ips[i]].operand = ips[end] + 1;
+                        break;
+                    }
+                    case CommandType::BREAK:
+                    {
+                        commands[ips[i]].operand = ips[end] + 1;
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
+            }
+            break;
+        }
+        default:
+        {
+            PREPROC_ERROR(
+                commands[ips[start]].token->location,
+                fmt::format("crossReferenceBlocks: The command {} is not implemented yet.\n", COMMAND_NAME[commands[ips[start]].type]),
+                commands[ips[start]].token->macrorefs
+            );
+        }
+    }
+#ifdef DEBUG
+    for (int64 i = (int64)start; i >= (int64)end; i--) {
+        std::cout << "    " << LOCATION_TAG(commands[ips[i]].token->location) << ips[i] << ": " << COMMAND_NAME[commands[ips[i]].type] << " " << commands[ips[i]].operand << std::endl;
+    }
+#endif
+    if (!ips.empty()) {
+        ips.erase(ips.begin() + end, ips.begin() + start + 1);
+        ips.insert(ips.begin() + end, ips_break.begin(), ips_break.end());
+    }
+    }

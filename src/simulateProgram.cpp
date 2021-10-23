@@ -13,8 +13,17 @@ int simulateProgram(Program* const program) {
     while (ip < commands.size()) {
         const CommandType& type = commands[ip].type;
         const Location& location = commands[ip].token->location;
-        const std::string& tokenValue = commands[ip].token->value;
+        //const std::string& tokenValue = commands[ip].token->value;
         const int64& operand = commands[ip].operand;
+#ifdef DEBUG
+        if (
+            (commands[ip].token->macrorefs.empty()) ||
+            (ip + 1 < commands.size() && commands[ip + 1].token->macrorefs.empty()) ||
+            (commands[ip].token->macrorefs[0].macroindex != commands[ip + 1].token->macrorefs[0].macroindex)
+            ) {
+            ip = ip;
+        }
+#endif
         switch (type) {
             // ! INPUT
             // * PUSH_INT
@@ -27,12 +36,12 @@ int simulateProgram(Program* const program) {
             // * PUSH_STR
             case CommandType::PUSH_STR:
             {
-                std::string unicodeword = pureStrToUnicodeStr(tokenValue);
+                std::string unicodeword = pureStrToUnicodeStr(commands[ip].token->value);
                 size_t unicodewordsize = unicodeword.size();
                 if (unicodewordsize + 1 >= STRING_CAPACITY) {
                     RUNTIME_ERROR(
                         location,
-                        fmt::format("The string \"{}\" causes the memory to overflow.\n", tokenValue),
+                        fmt::format("The string \"{}\" causes the memory to overflow.\n", commands[ip].token->value),
                         commands[ip].token->macrorefs
                     );
                 }
@@ -410,6 +419,11 @@ int simulateProgram(Program* const program) {
             }
             // * END
             case CommandType::END:
+            {
+                ip = operand;
+                break;
+            }
+            case CommandType::BREAK:
             {
                 ip = operand;
                 break;

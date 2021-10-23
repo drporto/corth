@@ -50,6 +50,7 @@ enum class CommandType {
     WHILE,
     DO,
     END,
+    BREAK,
     // ! MEMORY
     MEM,
     LOAD,
@@ -101,6 +102,7 @@ static std::map<CommandType, std::string> COMMAND_NAME = {
     {CommandType::WHILE, "WHILE"},
     {CommandType::DO, "DO"},
     {CommandType::END, "END"},
+    {CommandType::BREAK, "BREAK"},
     // ! MEMORY
     {CommandType::MEM, "MEM"},
     {CommandType::LOAD, "LOAD"},
@@ -149,6 +151,7 @@ static std::map<std::string, CommandType> COMMAND_TYPE = {
     {"while", CommandType::WHILE},
     {"do", CommandType::DO},
     {"end", CommandType::END},
+    {"break", CommandType::BREAK},
     // ! MEMORY
     {"mem", CommandType::MEM},
     {"@", CommandType::LOAD},

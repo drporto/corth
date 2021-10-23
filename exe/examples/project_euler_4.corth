@@ -12,6 +12,9 @@ MACRO MAX* mem END
 
 N2
 while dup N1 > do
+    if dup dup * MAX* @32 < do
+        break
+    end
     if dup 10 % 0 == do
         dup print
     end
