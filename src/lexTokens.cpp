@@ -40,6 +40,12 @@ void lexTokens(Program* const program) {
                 commands.emplace_back(&tokens[i], COMMAND_TYPE[tokens[i].value]);
                 break;
             }
+            // ! MEMORY
+            case TokenType::MEMORY:
+            {
+                commands.emplace_back(&tokens[i], CommandType::MEMORY, std::stoll(tokens[i].value));
+                break;
+            }
             // ! WORD
             case TokenType::WORD:
             {

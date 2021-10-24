@@ -52,7 +52,7 @@ enum class CommandType {
     END,
     BREAK,
     // ! MEMORY
-    MEM,
+    MEMORY,
     LOAD,
     STORE,
     // ! SYSCALL
@@ -104,7 +104,7 @@ static std::map<CommandType, std::string> COMMAND_NAME = {
     {CommandType::END, "END"},
     {CommandType::BREAK, "BREAK"},
     // ! MEMORY
-    {CommandType::MEM, "MEM"},
+    {CommandType::MEMORY, "MEMORY"},
     {CommandType::LOAD, "LOAD"},
     {CommandType::STORE, "STORE"},
     // ! SYSCALL
@@ -153,7 +153,7 @@ static std::map<std::string, CommandType> COMMAND_TYPE = {
     {"end", CommandType::END},
     {"break", CommandType::BREAK},
     // ! MEMORY
-    {"mem", CommandType::MEM},
+    //{"mem", CommandType::MEM},
     {"@", CommandType::LOAD},
     {"!", CommandType::STORE},
     // ! SYSCALL

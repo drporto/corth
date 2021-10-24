@@ -28,8 +28,8 @@
 #define SYSTEM_ERROR_CODE 3
 
 #define EXPAND_MACROS(EM, MACROREF) \
-    for (size_t i = 0; i < MACROREF.size(); i++) \
-        EM += (LOCATION_TAG(MACROREF[MACROREF.size() - 1 - i].location) + MACRO_TAG + fmt::format("Expanded from {}.\n", macros[MACROREF[MACROREF.size() - 1 - i].macroindex].name));
+    for (size_t iii = 0; iii < MACROREF.size(); iii++) \
+        EM += (LOCATION_TAG(MACROREF[MACROREF.size() - 1 - iii].location) + MACRO_TAG + fmt::format("Expanded from {}.\n", macros[MACROREF[MACROREF.size() - 1 - iii].macroindex].name));
 
 #define PREPROC_ERROR(LOC, M, MACROREF) \
     std::string EM = LOCATION_TAG(LOC) + PREPROC_ERROR_TAG + M; \

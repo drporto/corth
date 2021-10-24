@@ -5,11 +5,13 @@
 
 #include "Definitions.hpp"
 
-#include "Token.hpp"
+#include "Memory.hpp"
 #include "Macro.hpp"
+#include "Token.hpp"
 #include "Command.hpp"
 
 struct Program {
+    std::vector<Memory> memories;
     std::vector<Macro> macros;
     std::vector<Token> tokens;
     std::vector<Command> commands;

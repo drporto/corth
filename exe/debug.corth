@@ -1,0 +1,34 @@
+MACRO num 2 END
+
+MACRO size 16 END
+
+MEMORY a* size num * END
+
+MEMORY b* size num * END
+
+'a' a* !
+a* @ print
+
+'b' b* !
+b* @ print
+
+// 5
+// if dup 0 == do
+//     if 1 do
+//         69 print
+//     else
+//         -69 print
+//     end
+// elif dup 1 == do
+//     dup print
+// else
+//     dup
+//     while dup 0 > do
+//         dup print
+//         if dup 2 == do
+//             break
+//         end
+//         1 -
+//     end
+//     drop
+// end

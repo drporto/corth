@@ -2,6 +2,7 @@
 
 int simulateProgram(Program* const program) {
 
+    const std::vector<Memory>& memories = program->memories;
     const std::vector<Macro>& macros = program->macros;
     const std::vector<Command>& commands = program->commands;
 
@@ -206,10 +207,10 @@ int simulateProgram(Program* const program) {
                 break;
             }
             // ! MEMORY
-            // * MEM
-            case CommandType::MEM:
+            // * MEMORY
+            case CommandType::MEMORY:
             {
-                stack.push_back(STRING_CAPACITY);
+                stack.push_back(memories[operand].address);
                 ip++;
                 break;
             }

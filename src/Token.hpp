@@ -16,6 +16,7 @@ enum class TokenType {
     CHAR,
     STRING,
     KEYWORD,
+    MEMORY,
     WORD,
     COUNT
 };
@@ -36,6 +37,7 @@ static std::map<TokenType, std::string> TOKEN_NAME = {
     {TokenType::CHAR, "CHAR"},
     {TokenType::STRING, "STRING"},
     {TokenType::KEYWORD, "KEYWORD"},
+    {TokenType::MEMORY, "MEMORY"},
     {TokenType::WORD, "WORD"},
     {TokenType::COUNT, "COUNT"}
 };
