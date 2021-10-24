@@ -84,7 +84,7 @@ void preprocessTokens(Program* const program) {
                         end++;
                     }
                     if (memorystack.size() == 1) {
-                        size_t address = 0;
+                        size_t address = STRING_CAPACITY;
                         if (!memories.empty()) address = memories.back().address + memories.back().size;
                         memories.emplace_back(tokens[i + 1].value, tokens[i].location, address, memorystack[0]);
                         tokens.erase(tokens.begin() + i, tokens.begin() + end + 1);

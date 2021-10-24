@@ -6,7 +6,7 @@
 INCLUDE ".\\std\\stdio.corth"
 INCLUDE ".\\std\\stdlib.corth"
 
-MACRO SUM* mem 4 + END
+MEMORY SUM* 4 END
 MACRO MAX 4000000 END
 
 0 SUM* !32
@@ -14,12 +14,13 @@ MACRO MAX 4000000 END
 1 2
 while dup MAX < do
     if dup 2 % 0 == do
-        dup mem @32 + mem !32
+        dup SUM* @32 + SUM* !32
     end
     dup <<< +
 end
 drop drop
 
-"Sum of the even-valued terms of the Fibonacci sequence below 4KK: " PUTS mem @32 print
+"Sum of the even-valued terms of the Fibonacci sequence below 4KK: " PUTS
+SUM* @32 print
 
 0 EXIT

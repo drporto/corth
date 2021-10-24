@@ -6,7 +6,7 @@ INCLUDE ".\\std\\stdlib.corth"
 
 MACRO N1 1000 END
 MACRO N2 9999 END
-MACRO MAX* mem END
+MEMORY MAX* 4 END
 
 0 MAX* !32
 
